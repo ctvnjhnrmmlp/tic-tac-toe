@@ -6,3 +6,15 @@ datasource db {
   provider = "mongodb"
   url      = env("NEXT_PUBLIC_MONGODB_URI_FULL")
 }
+
+model Result {
+  id           String @id @default(uuid()) @map("_id")
+  firstPlayer  Int
+  secondPlayer Int
+  tie          Int
+  computer     Int
+}
+
+model State {
+  id String @id @default(uuid()) @map("_id")
+}

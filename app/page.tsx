@@ -2,6 +2,7 @@
 
 import { ADJUSTMENT_OBJECT, INITIAL_BOARDS, INITIAL_STATE } from '@/constants';
 import AppReducer, { EAppAction } from '@/reducer/app';
+import { addResult } from '@/services/tictactoe/results';
 import { EMove, EResult, TResults } from '@/types';
 import { deepCopy, setLocalStorage } from '@/utils';
 import { ReactNode, useCallback, useMemo, useReducer, useRef } from 'react';
@@ -9,13 +10,12 @@ import { ReactNode, useCallback, useMemo, useReducer, useRef } from 'react';
 export default function Home() {
 	const [state, dispatch] = useReducer(AppReducer, INITIAL_STATE);
 	const { isComputer, isFirstPlayer, isGameOver, boards, scores } = state;
-
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const MAX_SYMBOL = useMemo(() => boards.length, []);
 	const boardFilledCtr = useRef<number>(0);
 
 	const calculateGameStatus = (results: TResults, isComputer: boolean) => {
 		let isWin: boolean = false;
+
 		for (let key in results) {
 			if (results[key as EResult] === MAX_SYMBOL - 1) {
 				isWin = true;
@@ -48,8 +48,12 @@ export default function Home() {
 			dispatch({ type: EAppAction.SET_SCORES, payload: scores });
 			dispatch({ type: EAppAction.SET_PLAYER, payload: true });
 			setLocalStorage(scores);
+
+			// addResult(scores);
+			console.log(results);
 		}
 	};
+
 	const getLines = (
 		rowIdx: number,
 		colIdx: number,
@@ -322,6 +326,7 @@ export default function Home() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[isGameOver, boards]
 	);
+
 	const generateBoard = useCallback((): ReactNode => {
 		return boards.map((row, idx) => {
 			return (
