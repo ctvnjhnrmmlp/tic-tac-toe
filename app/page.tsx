@@ -49,8 +49,7 @@ export default function Home() {
 			dispatch({ type: EAppAction.SET_PLAYER, payload: true });
 			setLocalStorage(scores);
 
-			// addResult(scores);
-			console.log(results);
+			addResult(scores);
 		}
 	};
 
